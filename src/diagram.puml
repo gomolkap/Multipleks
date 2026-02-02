@@ -4,8 +4,8 @@ skinparam classAttributeIconSize 0
 ' ===== ENUM =====
 enum TicketType {
     STANDARD
-    VIP
-    THREE_D
+    REDUCED
+    FAMILY
 }
 
 ' ===== CORE CLASSES =====
