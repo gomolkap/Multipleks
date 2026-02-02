@@ -1,0 +1,85 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' ===== ENUM =====
+enum TicketType {
+    STANDARD
+    VIP
+    THREE_D
+}
+
+' ===== CORE CLASSES =====
+class CinemaNetwork {
+    -cinemas : List<Cinema>
+    +addCinema(cinema : Cinema) : void
+    +getCinemas() : List<Cinema>
+}
+
+class Cinema {
+    -name : String
+    -address : String
+    -halls : List<Hall>
+    -screenings : List<Screening>
+    +addHall(hall : Hall) : void
+    +addScreening(screening : Screening) : void
+    +printProgramme() : void
+    +findMovie(title : String) : Movie
+    +getScreenings() : List<Screening>
+}
+
+class Hall {
+    -name : String
+    -seats : Map<String, Seat>
+    +getSeat(seatNumber : String) : Seat
+}
+
+class Seat {
+    -number : String
+    -reserved : boolean
+    +reserve() : void
+    +isReserved() : boolean
+    +getNumber() : String
+}
+
+class Movie {
+    -title : String
+    -durationMinutes : int
+    +getTitle() : String
+}
+
+class Screening {
+    -movie : Movie
+    -hall : Hall
+    -dateTime : LocalDateTime
+    -type : TicketType
+    -tickets : List<Ticket>
+    +reservePlaces(seatNumbers : String[]) : void
+    +reservePlaces(customer : Customer, seatNumbers : String[]) : void
+    +getMovie() : Movie
+}
+
+class Ticket {
+    -screening : Screening
+    -seat : Seat
+    -customer : Customer
+}
+
+class Customer {
+    -name : String
+    -tickets : List<Ticket>
+    +addTicket(ticket : Ticket) : void
+    +showTickets() : void
+}
+
+' ===== RELATIONSHIPS =====
+CinemaNetwork "1" o-- "*" Cinema : manages
+Cinema "1" o-- "*" Hall : contains
+Cinema "1" o-- "*" Screening : schedules
+Screening "1" --> "1" Movie
+Screening "1" --> "1" Hall
+Screening "1" o-- "*" Ticket
+Customer "1" o-- "*" Ticket
+Hall "1" o-- "*" Seat
+Screening --> TicketType
+
+@enduml
